@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 0 0% 0%;
+        --foreground: 210 40% 98%;
+    }
+
+    body {
+        @apply bg-black text-zinc-50 overflow-x-hidden selection:bg-indigo-500/30;
+    }
+}
+
+.glass-panel {
+    background: rgba(24, 24, 27, 0.4);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.gradient-glow {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.4) 0%, rgba(96, 165, 250, 0.4) 100%);
+    filter: blur(60px);
+    border-radius: 50%;
+    pointer-events: none;
+}

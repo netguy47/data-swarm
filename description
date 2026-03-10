@@ -1,0 +1,42 @@
+Autonomous agent framework for elastic data contracting and secure, isolated code execution.
+
+Project Overview
+
+Data-Swarm is an infrastructure-as-a-service framework built to replace the slow and costly process of manual data contracting. The old way, which depends on people for data cleaning and setup, is not only inefficient but also brings security risks.
+
+Data-Swarm shifts this paradigm by deploying autonomous agents into secure cloud sandboxes. It prioritizes deterministic outcomes over probabilistic "AI answers" by ensuring that every data transformation is performed by verified Python code executed in isolated environments.
+
+Core Technical Pillars
+
+1. Autonomous Orchestration (The Supervisor Agent)
+
+The system utilizes a Supervisor agent that performs initial schema analysis on raw, unrefined datasets. It constructs a stepwise execution plan, breaking complex data objectives into discrete, auditable tasks.
+
+2. Isolated Execution (E2B Micro-VMs)
+
+Security is treated as a technical constraint rather than a policy. Data-Swarm utilizes E2B micro-VMs to provide ephemeral, zero-trust execution environments.
+
+* Agents write real Python code.
+* Code is executed within a transient sandbox.
+* Data remains isolated from the public internet.
+
+3. Verifiable Integrity
+
+Unlike standard LLM implementations that may hallucinate transformations, Data-Swarm produces auditable results. The final output is accompanied by the actual code generated and a full log of the execution history, allowing for human-in-the-loop verification where required.
+
+Technical Stack
+
+* Frontend: React, Vite, Tailwind CSS, shadcn/ui
+* Compute engine: E2B SDK (Sandboxed Micro-VMs)
+* Agent Framework: LangChain / Custom Logic Swarms
+* Database/Persistence: Drizzle ORM, PostgreSQL
+
+Use Cases
+
+* Rapid Data Cleaning: Automating the "dirty work" of dataset preparation for data science teams.
+* Elastic Infrastructure: Scaling data processing capabilities without increasing headcount or long-term VPC exposure.
+* Secure Contracting: Performing data operations on sensitive datasets within a controlled, transient environment.
+
+Strategic Trajectory
+
+The objective of Data-Swarm is not merely to augment data scientist productivity, but to build a self-operating layer of infrastructure that treats data science as a predictable, scalable, and secure utility.
