@@ -5,8 +5,8 @@ import { systemLogs, leads } from "../shared/schema";
 import { desc, eq, count } from "drizzle-orm";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-    apiVersion: "2024-12-18.acacia",
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_placeholder", {
+    apiVersion: "2026-02-25.clover",
 });
 
 export function registerRoutes(app: Express): Server {
