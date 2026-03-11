@@ -23,11 +23,22 @@ export function HeroSection() {
                         Execute your most sensitive enterprise AI workloads in ephemeral, zero-persistence E2B Firecracker micro-VMs. Complete auditability. Zero data retention.
                     </p>
                     <div className="flex flex-col sm:flex-row justify-center gap-4">
-                        <a href="#waitlist" className="bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2">
-                            Join the Audit Swarm <ChevronRight className="w-4 h-4" />
-                        </a>
-                        <a href="#architecture" className="glass-panel text-zinc-300 px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-colors">
-                            View Architecture
+                        <button
+                            onClick={async () => {
+                                try {
+                                    const res = await fetch("/api/create-checkout-session", { method: "POST" });
+                                    const data = await res.json();
+                                    if (data.url) window.location.href = data.url;
+                                } catch (err) {
+                                    console.error("Payment failed", err);
+                                }
+                            }}
+                            className="bg-white text-black px-8 py-3 rounded-full font-semibold hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2"
+                        >
+                            Initialize Swarm <ChevronRight className="w-4 h-4" />
+                        </button>
+                        <a href="#architecture" className="glass-panel text-zinc-300 px-8 py-3 rounded-full font-semibold hover:bg-white/10 transition-colors flex items-center justify-center">
+                            Architecture Docs
                         </a>
                     </div>
                 </motion.div>

@@ -3,6 +3,11 @@ import { createServer, type Server } from "http";
 import { db } from "./db";
 import { systemLogs, leads } from "../shared/schema";
 import { desc, eq, count } from "drizzle-orm";
+import Stripe from "stripe";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+    apiVersion: "2024-12-18.acacia",
+});
 
 export function registerRoutes(app: Express): Server {
     app.post("/api/waitlist", async (req, res) => {
@@ -82,6 +87,57 @@ export function registerRoutes(app: Express): Server {
         } catch (err) {
             res.status(500).json({ error: "Server Error" });
         }
+    });
+
+    // --- Stripe Monetization Routes ---
+    app.post("/api/create-checkout-session", async (req, res) => {
+        try {
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ["card"],
+                line_items: [
+                    {
+                        price: process.env.STRIPE_PRICE_PRO || "price_1ShcBOKf65oxYJP8ZeRa8Vkn",
+                        quantity: 1,
+                    },
+                ],
+                mode: "subscription",
+                success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+                cancel_url: `${req.headers.origin}/`,
+            });
+
+            res.json({ url: session.url });
+        } catch (err: any) {
+            console.error("Stripe Session Error:", err);
+            res.status(500).json({ error: err.message });
+        }
+    });
+
+    app.post("/api/webhook", async (req, res) => {
+        const sig = req.headers["stripe-signature"] as string;
+        let event;
+
+        try {
+            event = stripe.webhooks.constructEvent(
+                (req as any).rawBody || JSON.stringify(req.body),
+                sig,
+                process.env.STRIPE_WEBHOOK_SECRET || ""
+            );
+        } catch (err: any) {
+            console.error("Webhook Signature Verification Failed:", err.message);
+            return res.status(400).send(`Webhook Error: ${err.message}`);
+        }
+
+        if (event.type === "checkout.session.completed") {
+            const session = event.data.object as Stripe.Checkout.Session;
+            const email = session.customer_details?.email;
+
+            if (email) {
+                console.log(`✅ Payment received from ${email}. Updating lead status...`);
+                await db.update(leads).set({ status: "audited" }).where(eq(leads.email, email));
+            }
+        }
+
+        res.json({ received: true });
     });
 
     return createServer(app);
