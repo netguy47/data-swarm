@@ -504,19 +504,27 @@ const Footer = () => (
     </footer>
 );
 
+import { Route, Switch } from "wouter";
+import Dashboard from "./pages/Dashboard";
+
 // --- Main App Component ---
 
 export default function App() {
     return (
-        <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-blue-600/40 font-sans tracking-tight">
-            <Navbar />
-            <main>
-                <HeroSection />
-                <TrustStack />
-                <InfrastructureSection />
-                <WaitlistForm />
-            </main>
-            <Footer />
-        </div>
+        <Switch>
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/">
+                <div className="min-h-screen bg-zinc-950 text-zinc-100 selection:bg-blue-600/40 font-sans tracking-tight">
+                    <Navbar />
+                    <main>
+                        <HeroSection />
+                        <TrustStack />
+                        <InfrastructureSection />
+                        <WaitlistForm />
+                    </main>
+                    <Footer />
+                </div>
+            </Route>
+        </Switch>
     );
 }
