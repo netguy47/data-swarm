@@ -158,11 +158,11 @@ const HeroSection = () => (
                 </div>
                 <div className="flex gap-3">
                     <span className="text-zinc-600">04</span>
-                    <p className="text-indigo-400">[STRATEGIST] Analyzing Professional DNA... Lead Density: HIGH</p>
+                    <p className="text-indigo-400">[SIGNAL HUNTER] Ingesting commit #882: 'lag in stochastic rendering'...</p>
                 </div>
                 <div className="flex gap-3">
                     <span className="text-zinc-600">05</span>
-                    <p className="text-emerald-400 underline decoration-emerald-500/30 underline-offset-4 font-bold">[OVERSEER] Integrity Verified. PBS Calibration: 96.8/100</p>
+                    <p className="text-emerald-400 underline decoration-emerald-500/30 underline-offset-4 font-bold">[OVERSEER] Bayesian Verification: 98%. Pivot: Stealth LinkedIn Vector.</p>
                 </div>
                 <div className="flex gap-3">
                     <span className="text-zinc-600">06</span>
@@ -183,8 +183,8 @@ const TrustStack = () => {
             accent: "blue",
         },
         {
-            title: "Strategist Layer",
-            desc: "Deep professional DNA analysis. Calibrates PBS scores to ensure lead quality density.",
+            title: "Truth Discovery Engine",
+            desc: "Deep signal hunting and Bayesian relationship mapping to ensure >95% confidence before connection.",
             icon: Brain,
             color: "from-indigo-500 to-purple-500",
             accent: "indigo",
@@ -223,7 +223,7 @@ const TrustStack = () => {
                         </motion.div>
                         <h2 className="text-5xl font-black text-zinc-100 tracking-tight leading-none">The Trust Stack</h2>
                         <p className="text-zinc-400 text-xl font-light">
-                            Governance shouldn't be an afterthought. Data-Swarm is built from the kernel up to maintain Information Integrity.
+                            Governance shouldn't be an afterthought. Data-Swarm uses Bayesian Logic and Signal-First hunting to eradicate noise.
                         </p>
                     </div>
                     <div className="flex gap-3">
@@ -292,11 +292,11 @@ const InfrastructureSection = () => (
                 <div className="grid grid-cols-1 gap-10">
                     <div className="flex gap-6 group">
                         <div className="flex-shrink-0 w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center group-hover:border-blue-500/50 transition-colors shadow-xl">
-                            <Cpu className="w-8 h-8 text-blue-400" />
+                            <Eye className="w-8 h-8 text-blue-400" />
                         </div>
                         <div>
-                            <h4 className="text-zinc-100 font-black mb-2 text-xl tracking-tight">Ephemeral Sandboxing</h4>
-                            <p className="text-zinc-500 text-base leading-relaxed">Every script is executed in a dedicated Firecracker micro-VM with its own independent kernel. Wiped instantly on completion.</p>
+                            <h4 className="text-zinc-100 font-black mb-2 text-xl tracking-tight">Bayesian Omnichannel Routing</h4>
+                            <p className="text-zinc-500 text-base leading-relaxed">System mechanically outmaneuvers catch-all traps. Automatically pivots from SMTP to Headless LinkedIn execution based on real-time signal validity.</p>
                         </div>
                     </div>
                     <div className="flex gap-6 group">
