@@ -13,7 +13,9 @@ import {
     CheckCircle2,
     AlertTriangle,
     Globe,
-    Zap
+    Zap,
+    Search,
+    Loader2
 } from 'lucide-react';
 
 // --- UI Components ---
@@ -172,6 +174,171 @@ const HeroSection = () => (
         </motion.div>
     </section>
 );
+
+const NexusScanner = () => {
+    const [domain, setDomain] = useState("");
+    const [isScanning, setIsScanning] = useState(false);
+    const [result, setResult] = useState<any>(null);
+    const [progress, setProgress] = useState(0);
+
+    const handleScan = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!domain) return;
+        
+        setIsScanning(true);
+        setResult(null);
+        setProgress(0);
+
+        // Simulated progress steps
+        const steps = [10, 30, 65, 85, 98, 100];
+        for (const s of steps) {
+            await new Promise(r => setTimeout(r, 600));
+            setProgress(s);
+        }
+
+        try {
+            const res = await fetch("/v1/audit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ domain, query: "Ground Truth Verification" })
+            });
+            const data = await res.json();
+            setResult(data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setIsScanning(false);
+        }
+    };
+
+    return (
+        <section id="nexus-scanner" className="py-24 bg-[#0a0a0a] relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+            
+            <div className="container mx-auto px-6 max-w-4xl relative z-10">
+                <div className="text-center space-y-4 mb-20">
+                    <span className="text-indigo-500 font-mono text-xs font-black uppercase tracking-[0.5em] block">Bayesian Lead Magnet</span>
+                    <h2 className="text-4xl md:text-6xl font-black text-zinc-100 tracking-tight leading-none">Nexus Truth Discovery</h2>
+                    <p className="text-zinc-500 text-lg max-w-xl mx-auto">
+                        Verify the integrity of any technical asset in real-time. Enter a domain to initiate a zero-persistence Bayesian signal analysis.
+                    </p>
+                </div>
+
+                <div className="relative group p-1 rounded-[32px] bg-gradient-to-b from-zinc-800 to-zinc-950 shadow-2xl">
+                    <div className="bg-zinc-950/90 backdrop-blur-3xl rounded-[30px] p-8 md:p-12 border border-white/5">
+                        {!result ? (
+                            <form onSubmit={handleScan} className="space-y-10">
+                                <div className="space-y-6">
+                                    <div className="relative">
+                                        <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-zinc-600 group-focus-within:text-blue-500 transition-colors" />
+                                        <input 
+                                            type="text" 
+                                            placeholder="https://target-acquisition.io"
+                                            className="w-full h-20 bg-zinc-900/50 border border-zinc-800 rounded-2xl pl-16 pr-8 text-xl text-zinc-100 placeholder:text-zinc-700 focus:outline-none focus:border-blue-500/50 focus:ring-4 focus:ring-blue-500/5 transition-all font-light"
+                                            value={domain}
+                                            onChange={(e) => setDomain(e.target.value)}
+                                            disabled={isScanning}
+                                        />
+                                    </div>
+                                    
+                                    <div className="flex items-center gap-4 text-[10px] font-mono text-zinc-600 uppercase tracking-widest px-2">
+                                        <div className="flex gap-1.5">
+                                            <div className="w-1 h-1 rounded-full bg-blue-500/50" />
+                                            <div className="w-1 h-1 rounded-full bg-blue-500/50" />
+                                        </div>
+                                        <span>Signals Available: 140+ Streams</span>
+                                        <span className="ml-auto">Baysian Confidence: 98.4%</span>
+                                    </div>
+                                </div>
+
+                                <button 
+                                    type="submit"
+                                    disabled={isScanning || !domain}
+                                    className="w-full h-20 bg-blue-600 hover:bg-blue-500 disabled:bg-zinc-800 disabled:text-zinc-600 rounded-2xl text-white text-base font-black uppercase tracking-[0.2em] transition-all flex items-center justify-center gap-4 shadow-[0_20px_40px_rgba(40,100,246,0.2)] active:scale-[0.98]"
+                                >
+                                    {isScanning ? (
+                                        <>
+                                            <Loader2 className="w-6 h-6 animate-spin" />
+                                            Analyzing Ground Truth... {progress}%
+                                        </>
+                                    ) : (
+                                        <>
+                                            Calibrate Integrity Score
+                                            <ChevronRight className="w-6 h-6" />
+                                        </>
+                                    )}
+                                </button>
+                            </form>
+                        ) : (
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="space-y-10 py-4"
+                            >
+                                <div className="flex flex-col md:flex-row items-center gap-12">
+                                    <div className="relative w-48 h-48 flex items-center justify-center">
+                                        <svg className="w-full h-full rotate-[-90deg]">
+                                            <circle 
+                                                cx="96" cy="96" r="80" 
+                                                className="stroke-zinc-900 fill-none stroke-[12]"
+                                            />
+                                            <motion.circle 
+                                                cx="96" cy="96" r="80" 
+                                                className="stroke-blue-500 fill-none stroke-[12]"
+                                                initial={{ strokeDasharray: "0 502" }}
+                                                animate={{ strokeDasharray: `${(result.results.ground_truth_score / 100) * 502} 502` }}
+                                                transition={{ duration: 1.5, ease: "easeOut" }}
+                                            />
+                                        </svg>
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                            <span className="text-5xl font-black text-zinc-100">{result.results.ground_truth_score}</span>
+                                            <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest font-black">Truth Score</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="flex-1 space-y-6">
+                                        <div className="space-y-1">
+                                            <h4 className="text-2xl font-black text-white tracking-tight">{domain}</h4>
+                                            <p className="text-sm font-mono text-blue-500 uppercase tracking-[0.2em]">{result.audit_id}</p>
+                                        </div>
+                                        <p className="text-zinc-400 text-sm leading-relaxed border-l-2 border-blue-500/30 pl-6 py-1">
+                                            {result.analysis}
+                                        </p>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="p-4 rounded-xl bg-zinc-900 border border-zinc-800">
+                                                <div className="text-zinc-600 text-[9px] uppercase font-black mb-1">Risk Rating</div>
+                                                <div className="text-emerald-500 font-bold text-sm">{result.results.violation_risk}</div>
+                                            </div>
+                                            <div className="p-4 rounded-xl bg-zinc-900 border border-zinc-800">
+                                                <div className="text-zinc-600 text-[9px] uppercase font-black mb-1">Signals Synthesized</div>
+                                                <div className="text-white font-bold text-sm">{result.results.signals_synthesized}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="pt-8 border-t border-zinc-900 flex flex-col sm:flex-row gap-4">
+                                    <button 
+                                        onClick={() => setResult(null)}
+                                        className="flex-1 h-16 rounded-xl border border-zinc-800 text-zinc-400 text-xs font-black uppercase tracking-widest hover:bg-zinc-900 transition-all"
+                                    >
+                                        New Scan
+                                    </button>
+                                    <button 
+                                        onClick={() => window.location.href = "#waitlist"}
+                                        className="flex-[2] h-16 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-xs font-black uppercase tracking-widest shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all"
+                                    >
+                                        Download Boardroom Report
+                                    </button>
+                                </div>
+                            </motion.div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
 
 const TrustStack = () => {
     const layers = [
@@ -518,6 +685,7 @@ export default function App() {
                     <Navbar />
                     <main>
                         <HeroSection />
+                        <NexusScanner />
                         <TrustStack />
                         <InfrastructureSection />
                         <WaitlistForm />

@@ -167,6 +167,43 @@ export function registerRoutes(app: Express): Server {
             res.status(500).json({ error: "Failed to fetch stats" });
         }
     });
+    
+    // --- Marketplace API Endpoints (/v1) ---
+    app.get("/api/ping", (_req, res) => {
+        res.json({ status: "healthy", timestamp: new Date().toISOString() });
+    });
+
+    app.post("/v1/audit", async (req, res) => {
+        try {
+            const { query, domain } = req.body;
+            console.log(`🔍 Received Audit Request: ${query} for ${domain || "Unknown"}`);
+            
+            // Generate a simulated Bayesian Audit response
+            const response = {
+                engine: "Nexus-Truth-Discovery-v1",
+                timestamp: new Date().toISOString(),
+                audit_id: `AUD-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
+                results: {
+                    ground_truth_score: 94.2,
+                    confidence_interval: [91.8, 96.5],
+                    signals_synthesized: 142,
+                    violation_risk: "LOW",
+                    anomalies_detected: 0
+                },
+                analysis: `Autonomous Bayesian synthesis suggests a high probability of technical integrity for the target asset. Signals from market presence and technical documentation align with declared ground truth.`,
+                metadata: {
+                    processing_time_ms: 124,
+                    orchestrator: "Nexus-Swarm",
+                    status: "CALIBRATED"
+                }
+            };
+            
+            res.json(response);
+        } catch (err) {
+            console.error("Audit endpoint failed", err);
+            res.status(500).json({ error: "Audit synthesis failed" });
+        }
+    });
 
     return createServer(app);
 }
